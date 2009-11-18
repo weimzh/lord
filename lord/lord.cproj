@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{BECD8961-FA9F-4B2E-A62D-CB0802192AA1}</ProjectGuid>
+    <Compiler>
+      <Compiler ctype="GppCompiler" />
+    </Compiler>
+    <Language>CPP</Language>
+    <Target>Bin</Target>
+    <SynchReleaseVersion>false</SynchReleaseVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>.</OutputPath>
+    <DefineSymbols>_DEBUG=1</DefineSymbols>
+    <SourceDirectory>.</SourceDirectory>
+    <OutputName>lordd</OutputName>
+    <CompileTarget>Bin</CompileTarget>
+    <ExtraCompilerArguments>`sdl-config --cflags`</ExtraCompilerArguments>
+    <ExtraLinkerArguments>`sdl-config --libs` -lSDL_image</ExtraLinkerArguments>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>.</OutputPath>
+    <SourceDirectory>.</SourceDirectory>
+    <OptimizationLevel>3</OptimizationLevel>
+    <OutputName>lord</OutputName>
+    <CompileTarget>Bin</CompileTarget>
+    <ExtraCompilerArguments>`sdl-config --cflags`</ExtraCompilerArguments>
+    <ExtraLinkerArguments>`sdl-config --libs` -lSDL_image</ExtraLinkerArguments>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="src\bot.cpp" />
+    <Compile Include="src\card.cpp" />
+    <Compile Include="src\compress.cpp" />
+    <Compile Include="src\font.cpp" />
+    <Compile Include="src\game.cpp" />
+    <Compile Include="src\general.cpp" />
+    <Compile Include="src\hzk.cpp" />
+    <Compile Include="src\ini.cpp" />
+    <Compile Include="src\localplr.cpp" />
+    <Compile Include="src\main.cpp" />
+    <Compile Include="src\player.cpp" />
+    <Compile Include="src\sound.cpp" />
+    <Compile Include="src\text.cpp" />
+    <Compile Include="src\ui.cpp" />
+    <Compile Include="src\util.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\bot.h" />
+    <None Include="src\card.h" />
+    <None Include="src\font.h" />
+    <None Include="src\game.h" />
+    <None Include="src\general.h" />
+    <None Include="src\hzk.h" />
+    <None Include="src\ini.h" />
+    <None Include="src\iso_font.h" />
+    <None Include="src\localplr.h" />
+    <None Include="src\main.h" />
+    <None Include="src\player.h" />
+    <None Include="src\text.h" />
+    <None Include="src\ui.h" />
+  </ItemGroup>
+  <ProjectExtensions>
+    <MonoDevelop>
+      <Properties>
+        <Policies>
+          <TextStylePolicy TabWidth="3" NoTabsAfterNonTabs="True" RemoveTrailingWhitespace="True" EolMarker="Unix" inheritsSet="VisualStudio" inheritsScope="text/plain" scope="text/x-c++src" />
+          <TextStylePolicy TabWidth="3" NoTabsAfterNonTabs="True" RemoveTrailingWhitespace="True" EolMarker="Unix" inheritsSet="VisualStudio" inheritsScope="text/plain" scope="text/x-c++hdr" />
+        </Policies>
+      </Properties>
+    </MonoDevelop>
+  </ProjectExtensions>
+</Project>
