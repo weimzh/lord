@@ -146,7 +146,7 @@ bot_name2
 
 copyright
 {
-版权所有 (c) 2007, Wei Mingzhi <whistler@openoffice.org>.
+版权所有 (c) 2009, Wei Mingzhi <whistler_wmz@users.sf.net>.
 }
 
 // TRANSLATORS: CHANGE THESE TO THE FILENAMES OF YOUR TRANSLATED IMAGE FILES.
