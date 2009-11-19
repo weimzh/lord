@@ -15,16 +15,16 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>.</OutputPath>
-    <DefineSymbols>_DEBUG=1</DefineSymbols>
+    <OutputPath>Debug</OutputPath>
+    <DefineSymbols>_DEBUG=1 PREFIX=\"../\"</DefineSymbols>
     <SourceDirectory>.</SourceDirectory>
-    <OutputName>lordd</OutputName>
+    <OutputName>lord</OutputName>
     <CompileTarget>Bin</CompileTarget>
     <ExtraCompilerArguments>`sdl-config --cflags`</ExtraCompilerArguments>
     <ExtraLinkerArguments>`sdl-config --libs` -lSDL_image</ExtraLinkerArguments>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <OutputPath>.</OutputPath>
+    <OutputPath>Release</OutputPath>
     <SourceDirectory>.</SourceDirectory>
     <OptimizationLevel>3</OptimizationLevel>
     <OutputName>lord</OutputName>
