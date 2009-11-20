@@ -260,7 +260,7 @@ void CUIManager::DrawPlayerRight(const CCard handcard[20], int count_hc,
    DeleteCardImages(PLAYER_RIGHT);
    for (i = 0; i < count_hc; i++) {
       m_rgpCardImages[PLAYER_RIGHT][i] = new CCardImage(handcard == NULL ? 255 : handcard[i],
-      540, top + 15 * i, -1, true);
+         540, top + 15 * i, -1, true);
    }
    if (count_d == 0) {
       m_rgpTextLabels[PLAYER_RIGHT] = new CTextLabelBrush("PASS", 420, 175, 50);
