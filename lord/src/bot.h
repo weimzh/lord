@@ -21,6 +21,10 @@
 
 #include "player.h"
 
+typedef struct bothand_s {
+   int type, cnt, headval;
+} bothand_t;
+
 class CBot : public CBasePlayer
 {
 public:
@@ -50,6 +54,9 @@ private:
    CCard             m_rgBottomCard[3];
    int               m_rgiRemainingCard[15];
 
+   bothand_t         m_rgHand[100];
+   int               m_iNumHand;
+
    int               m_iCurLord;
    int               m_iCurPoint;
 
@@ -60,9 +67,9 @@ private:
    inline int           GetRemainingCard(int num) { return m_rgiRemainingCard[num - 1]; }
    inline int           GetRemainingCard(const CCard &c) { return c.IsJoker() ? m_rgiRemainingCard[c.GetNum() + 12] : m_rgiRemainingCard[c.GetNum() - 1]; }
    const discardhand_t &GetLastDiscard();
+   void                 AnalyzeHand();
    int                  FirstHandDiscard(CCard rgDiscarded[20]);
    int                  FollowCard(CCard rgDiscarded[20]);
-//   int                  EvalDiscard(const CCard rgCards[20], int iNumCards);
 };
 
 #endif

@@ -40,23 +40,21 @@ void CBasePlayer::NewRound()
 
 void CBasePlayer::DoDiscard(const CCard rgDiscarded[20], int iNum)
 {
-   int i, j = 0, k = 0;
+   int i, j, k;
 
-   // assume rgDiscarded is already sorted
+   // remove all discarded cards from the hand
    for (i = 0; i < iNum; i++) {
-      while (m_rgHandCard[j].GetCode() != rgDiscarded[i].GetCode()) {
-         m_rgHandCard[k++] = m_rgHandCard[j++];
+      k = 0;
+      for (j = 0; j < m_iNumHandCard; j++) {
+         if (m_rgHandCard[j].GetCode() != rgDiscarded[i].GetCode()) {
+            m_rgHandCard[k++] = m_rgHandCard[j];
+         }
       }
-      j++;
+      m_iNumHandCard = k;
    }
 
-   while (j < m_iNumHandCard) {
-      m_rgHandCard[k++] = m_rgHandCard[j++];
-   }
-
-   m_iNumHandCard = k;
-   if (k < 20) {
-      m_rgHandCard[k] = 255;
+   if (m_iNumHandCard < 20) {
+      m_rgHandCard[m_iNumHandCard] = 255;
    }
 }
 
