@@ -361,6 +361,9 @@ void CBot::AnalyzeHand()
       i--;
    }
 
+   // try if we can form more sequences by breaking bombs
+   // TODO
+
    // try if we can extend sequences by >2 ranks by breaking triplets
    for (i = 0; i < m_iNumHand; i++) {
       if (m_rgHand[i].type == DT_SINGLE) {
