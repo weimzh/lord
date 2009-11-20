@@ -418,8 +418,8 @@ void CBot::AnalyzeHand()
          m_rgHand[m_iNumHand].headval = i + 3;
          num_cards[i] -= 2;
 
-         for (j = i + 1; j < 12; j++) {
-            if (num_cards[i] < 2) {
+         for (j = i + 1; j < 16; j++) {
+            if (num_cards[j] < 2) {
                break;
             }
          }
