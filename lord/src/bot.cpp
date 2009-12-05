@@ -545,7 +545,38 @@ m_iNumHand--;
 int CBot::FollowCard(CCard rgDiscarded[20])
 {
    const discardhand_t &ld = GetLastDiscard();
+
    // TODO
+   switch (ld.type) {
+      case DT_SINGLE:
+         break;
+
+      case DT_DOUBLE:
+         break;
+
+      case DT_TRIPLE:
+         break;
+
+      case DT_TRIPLEAT1:
+         break;
+
+      case DT_TRIPLEAT2:
+         break;
+
+      case DT_QUADAT1:
+         break;
+
+      case DT_QUADAT2:
+         break;
+
+      case DT_QUAD:
+         break;
+
+      case DT_DBLJOKER:
+      default:
+         return 0; // we can't beat 2 jokers at all
+   }
+
    return 0;
 }
 
