@@ -233,6 +233,7 @@ void CBot::AnalyzeHand()
          m_rgHand[m_iNumHand].type = DT_QUAD;
          m_rgHand[m_iNumHand].cnt = 1;
          m_rgHand[m_iNumHand].headval = i + 3;
+
          m_iNumHand++;
          num_cards[i] = 0;
       }
@@ -312,20 +313,6 @@ void CBot::AnalyzeHand()
       }
    }
 
-   // merge continuous sequences
-   for (i = 0; i < m_iNumHand; i++) {
-      if (m_rgHand[i].type == DT_SINGLE) {
-         for (j = i + 1; j < m_iNumHand; j++) {
-            if (m_rgHand[j].headval - m_rgHand[j].cnt == m_rgHand[i].headval) {
-               m_rgHand[i].headval = m_rgHand[j].headval;
-               m_rgHand[i].cnt += m_rgHand[j].cnt;
-               m_rgHand[j].type = DT_INVALID;
-               j = i;
-            }
-         }
-      }
-   }
-
    // try if we can form more sequences by breaking triplets
    for (i = 0; i < 12; i++) {
       if (num_cards[i] == 0 && has_triplet[i] == -1) {
@@ -353,6 +340,7 @@ void CBot::AnalyzeHand()
             num_cards[i]--;
          } else if (has_triplet[i] != -1) {
             m_rgHand[has_triplet[i]].type = DT_INVALID;
+            has_triplet[i] = -1;
             num_cards[i] += 3 - 1;
          }
          i++;
@@ -360,10 +348,7 @@ void CBot::AnalyzeHand()
 
       i--;
    }
-
-   // try if we can form more sequences by breaking bombs
-   // TODO
-
+/*
    // try if we can extend sequences by >2 ranks by breaking triplets
    for (i = 0; i < m_iNumHand; i++) {
       if (m_rgHand[i].type == DT_SINGLE) {
@@ -379,9 +364,28 @@ void CBot::AnalyzeHand()
 
    for (i = 0; i < m_iNumHand; i++) {
       if (m_rgHand[i].type == DT_SINGLE) {
-         for (j = m_rgHand[i].headval - 1 - 3; j >= 0; j--) {
+         for (j = m_rgHand[i].headval - 3 - m_rgHand[i].cnt - 1; j >= 0; j--) {
             if (num_cards[j] == 0 && has_triplet[j] == -1) {
                break;
+            }
+         }
+         if (m_rgHand[i].headval - 3 - m_rgHand[i].cnt - j > 2) {
+         }
+      }
+   }
+*/
+   // merge continuous sequences
+   for (i = 0; i < m_iNumHand; i++) {
+      if (m_rgHand[i].type == DT_SINGLE) {
+         for (j = 0; j < m_iNumHand; j++) {
+            if (i == j) {
+               continue;
+            }
+            if (m_rgHand[j].headval - m_rgHand[j].cnt == m_rgHand[i].headval) {
+               m_rgHand[i].headval = m_rgHand[j].headval;
+               m_rgHand[i].cnt += m_rgHand[j].cnt;
+               m_rgHand[j].type = DT_INVALID;
+               j = i;
             }
          }
       }
@@ -455,12 +459,13 @@ void CBot::AnalyzeHand()
 
 int CBot::FirstHandDiscard(CCard rgDiscarded[20])
 {
-   AnalyzeHand();
+//   AnalyzeHand();
 
    // TODO
 //////////////////////////////////////////////////////////////////////////////////////
 //TEST CODE
    int t[20];
+if (m_iNumHandCard==20)AnalyzeHand();
    memset(t, 0, sizeof(t));
    if (m_iNumHand > 0) {
       int index = m_iNumHand - 1, i, j, k, c = 0;
@@ -526,6 +531,7 @@ int CBot::FirstHandDiscard(CCard rgDiscarded[20])
             break;
       }
       rgDiscarded[c] = 255;
+m_iNumHand--;
       return c;
    } else {
       printf("SOMETHING IS WRONG IN ANALYZEHAND!\n");
