@@ -70,6 +70,15 @@ private:
    void                 AnalyzeHand();
    int                  FirstHandDiscard(CCard rgDiscarded[20]);
    int                  FollowCard(CCard rgDiscarded[20]);
+
+   int                  FollowCardSingle(CCard rgDiscarded[20]);
+   int                  FollowCardDouble(CCard rgDiscarded[20]);
+   int                  FollowCardTriple(CCard rgDiscarded[20]);
+   int                  FollowCardTripleAt1(CCard rgDiscarded[20]);
+   int                  FollowCardTripleAt2(CCard rgDiscarded[20]);
+   int                  FollowCardQuadAt1(CCard rgDiscarded[20]);
+   int                  FollowCardQuadAt2(CCard rgDiscarded[20]);
+   int                  FollowCardQuad(CCard rgDiscarded[20]);
 };
 
 #endif

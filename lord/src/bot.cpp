@@ -542,6 +542,46 @@ m_iNumHand--;
 ////////////////////////////////////////////////////////////////
 }
 
+int CBot::FollowCardSingle(CCard rgDiscarded[20])
+{
+   return 0; // TODO
+}
+
+int CBot::FollowCardDouble(CCard rgDiscarded[20])
+{
+   return 0; // TODO
+}
+
+int CBot::FollowCardTriple(CCard rgDiscarded[20])
+{
+   return 0; // TODO
+}
+
+int CBot::FollowCardTripleAt1(CCard rgDiscarded[20])
+{
+   return 0; // TODO
+}
+
+int CBot::FollowCardTripleAt2(CCard rgDiscarded[20])
+{
+   return 0; // TODO
+}
+
+int CBot::FollowCardQuadAt1(CCard rgDiscarded[20])
+{
+   return 0; // TODO
+}
+
+int CBot::FollowCardQuadAt2(CCard rgDiscarded[20])
+{
+   return 0; // TODO
+}
+
+int CBot::FollowCardQuad(CCard rgDiscarded[20])
+{
+   return 0; // TODO
+}
+
 int CBot::FollowCard(CCard rgDiscarded[20])
 {
    const discardhand_t &ld = GetLastDiscard();
@@ -549,28 +589,28 @@ int CBot::FollowCard(CCard rgDiscarded[20])
    // TODO
    switch (ld.type) {
       case DT_SINGLE:
-         break;
+         return FollowCardSingle(rgDiscarded);
 
       case DT_DOUBLE:
-         break;
+         return FollowCardDouble(rgDiscarded);
 
       case DT_TRIPLE:
-         break;
+         return FollowCardTriple(rgDiscarded);
 
       case DT_TRIPLEAT1:
-         break;
+         return FollowCardTripleAt1(rgDiscarded);
 
       case DT_TRIPLEAT2:
-         break;
+         return FollowCardTripleAt2(rgDiscarded);
 
       case DT_QUADAT1:
-         break;
+         return FollowCardQuadAt1(rgDiscarded);
 
       case DT_QUADAT2:
-         break;
+         return FollowCardQuadAt2(rgDiscarded);
 
       case DT_QUAD:
-         break;
+         return FollowCardQuad(rgDiscarded);
 
       case DT_DBLJOKER:
       default:
