@@ -459,87 +459,142 @@ void CBot::AnalyzeHand()
 
 int CBot::FirstHandDiscard(CCard rgDiscarded[20])
 {
-//   AnalyzeHand();
+   int iMaxValue = -999999, iSelectedHand = -1, i, iValue;
+   int iNumTriplets = 0, iNumSingles = 0, iNumPairs = 0;
 
-   // TODO
-//////////////////////////////////////////////////////////////////////////////////////
-//TEST CODE
-   int t[20];
-if (m_iNumHandCard==20)AnalyzeHand();
-   memset(t, 0, sizeof(t));
-   if (m_iNumHand > 0) {
-      int index = m_iNumHand - 1, i, j, k, c = 0;
-      switch (m_rgHand[index].type) {
+   AnalyzeHand();
+
+   for (i = 0; i < m_iNumHand; i++) {
+      if (m_rgHand[i].type == DT_SINGLE && m_rgHand[i].cnt == 1) {
+         iNumSingles++;
+      } else if (m_rgHand[i].type == DT_DOUBLE && m_rgHand[i].cnt == 1) {
+         iNumPairs++;
+      } else if (m_rgHand[i].type == DT_TRIPLE) {
+         iNumTriplets++;
+      }
+   }
+
+   for (i = 0; i < m_iNumHand; i++) {
+      iValue = 0;
+
+      switch (m_rgHand[i].type) {
          case DT_SINGLE:
-         printf("single head=%d, cnt=%d\n",m_rgHand[index].headval, m_rgHand[index].cnt);
-            for (i = m_rgHand[index].headval - m_rgHand[index].cnt + 1; i <= m_rgHand[index].headval; i++) {
+            if (m_rgHand[i].cnt > 1) {
+               // sequence
+               iValue = 6 * (19 - m_rgHand[i].headval) * (19 - m_rgHand[i].headval) - 80 * (iNumSingles + iNumPairs);
+            } else {
+               // single card
+               iValue = 5 * (19 - m_rgHand[i].headval) * (19 - m_rgHand[i].headval) + 25 * iNumSingles;
+            }
+            break;
+
+         case DT_DOUBLE:
+            if (m_rgHand[i].cnt > 1) {
+               // pair sequence
+               iValue = 6 * (19 - m_rgHand[i].headval) * (19 - m_rgHand[i].headval) - 60 * (iNumSingles + iNumPairs);
+            } else {
+               // pair
+               iValue = 5 * (19 - m_rgHand[i].headval) * (19 - m_rgHand[i].headval) + 25 * iNumPairs + 10;
+            }
+            break;
+
+         case DT_TRIPLE:
+            iValue = 2 * (19 - m_rgHand[i].headval) * (19 - m_rgHand[i].headval);
+            if (iNumTriplets - iNumSingles - iNumPairs <= 2) {
+               iValue += 850; // play triplets first if we don't have much leftovers
+            }
+            break;
+
+         case DT_QUAD:
+            iValue = (19 - m_rgHand[i].headval) / 2;
+            break;
+
+         case DT_DBLJOKER:
+         default:
+            if (m_iNumHand <= 2) {
+               iValue = 999999;
+            } else {
+               iValue = 1;
+            }
+            break;
+      }
+
+      if (iValue > iMaxValue) {
+         iMaxValue = iValue;
+         iSelectedHand = i;
+      }
+   }
+
+   assert(iSelectedHand != -1);
+
+   int t[20];
+   memset(t, 0, sizeof(t));
+
+   int index = iSelectedHand, j, k, c = 0;
+
+   switch (m_rgHand[index].type) {
+      case DT_SINGLE:
+         for (i = m_rgHand[index].headval - m_rgHand[index].cnt + 1; i <= m_rgHand[index].headval; i++) {
+            for (j = 0; j < m_iNumHandCard; j++) {
+               if (m_rgHandCard[j].GetValue() == i) {
+                  rgDiscarded[c++] = m_rgHandCard[j];
+                  break;
+               }
+            }
+         }
+         break;
+
+      case DT_DOUBLE:
+         for (i = m_rgHand[index].headval - m_rgHand[index].cnt + 1; i <= m_rgHand[index].headval; i++) {
+            for (k = 0; k < 2; k++) {
                for (j = 0; j < m_iNumHandCard; j++) {
-                  if (m_rgHandCard[j].GetValue() == i) {
+                  if (m_rgHandCard[j].GetValue() == i && !t[j]) {
                      rgDiscarded[c++] = m_rgHandCard[j];
+                     t[j] = 1;
                      break;
                   }
                }
             }
-            break;
-         case DT_DOUBLE:
-         printf("double head=%d, cnt=%d\n",m_rgHand[index].headval, m_rgHand[index].cnt);
-            for (i = m_rgHand[index].headval - m_rgHand[index].cnt + 1; i <= m_rgHand[index].headval; i++) {
-               for (k = 0; k < 2; k++) {
-                  for (j = 0; j < m_iNumHandCard; j++) {
-                     if (m_rgHandCard[j].GetValue() == i && !t[j]) {
-                        rgDiscarded[c++] = m_rgHandCard[j];
-                        t[j] = 1;
-                        break;
-                     }
-                  }
-               }
-            }
-            break;
-         case DT_TRIPLE:
-         printf("triple head=%d, cnt=%d\n",m_rgHand[index].headval, m_rgHand[index].cnt);
-            for (i = m_rgHand[index].headval - m_rgHand[index].cnt + 1; i <= m_rgHand[index].headval; i++) {
-               for (k = 0; k < 3; k++) {
-                  for (j = 0; j < m_iNumHandCard; j++) {
-                     if (m_rgHandCard[j].GetValue() == i && !t[j]) {
-                        rgDiscarded[c++] = m_rgHandCard[j];
-                        t[j] = 1;
-                        break;
-                     }
-                  }
-               }
-            }
-            break;
-         case DT_QUAD:
-            printf("quad head=%d, cnt=%d\n",m_rgHand[index].headval, m_rgHand[index].cnt);
+         }
+         break;
 
-            for (i = m_rgHand[index].headval - m_rgHand[index].cnt + 1; i <= m_rgHand[index].headval; i++) {
-               for (k = 0; k < 4; k++) {
-                  for (j = 0; j < m_iNumHandCard; j++) {
-                     if (m_rgHandCard[j].GetValue() == i && !t[j]) {
-                        rgDiscarded[c++] = m_rgHandCard[j];
-                        t[j] = 1;
-                        break;
-                     }
+      case DT_TRIPLE:
+         for (i = m_rgHand[index].headval - m_rgHand[index].cnt + 1; i <= m_rgHand[index].headval; i++) {
+            for (k = 0; k < 3; k++) {
+               for (j = 0; j < m_iNumHandCard; j++) {
+                  if (m_rgHandCard[j].GetValue() == i && !t[j]) {
+                     rgDiscarded[c++] = m_rgHandCard[j];
+                     t[j] = 1;
+                     break;
                   }
                }
             }
-            break;
-         case DT_DBLJOKER:
-            printf("2jok\n");
-            rgDiscarded[c++] = CCard(52);
-            rgDiscarded[c++] = CCard(53);
-            break;
-      }
-      rgDiscarded[c] = 255;
-m_iNumHand--;
-      return c;
-   } else {
-      printf("SOMETHING IS WRONG IN ANALYZEHAND!\n");
-      rgDiscarded[0] = m_rgHandCard[m_iNumHandCard - 1];
-      rgDiscarded[1] = 255;
+         }
+         // TODO: kicker cards
+         break;
+
+      case DT_QUAD:
+         for (i = m_rgHand[index].headval - m_rgHand[index].cnt + 1; i <= m_rgHand[index].headval; i++) {
+            for (k = 0; k < 4; k++) {
+               for (j = 0; j < m_iNumHandCard; j++) {
+                  if (m_rgHandCard[j].GetValue() == i && !t[j]) {
+                     rgDiscarded[c++] = m_rgHandCard[j];
+                     t[j] = 1;
+                     break;
+                  }
+               }
+            }
+         }
+         break;
+
+      case DT_DBLJOKER:
+         rgDiscarded[c++] = CCard(52);
+         rgDiscarded[c++] = CCard(53);
+         break;
    }
-   return 1;
-////////////////////////////////////////////////////////////////
+
+   rgDiscarded[c] = 255;
+   return c;
 }
 
 int CBot::FollowCardSingle(CCard rgDiscarded[20])
