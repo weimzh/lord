@@ -68,6 +68,7 @@ private:
    inline int           GetRemainingCard(const CCard &c) { return c.IsJoker() ? m_rgiRemainingCard[c.GetNum() + 12] : m_rgiRemainingCard[c.GetNum() - 1]; }
    const discardhand_t &GetLastDiscard();
    void                 AnalyzeHand();
+   int                  PlayHand(const bothand_t &hand, CCard rgDiscarded[20]);
    int                  FirstHandDiscard(CCard rgDiscarded[20]);
    int                  FollowCard(CCard rgDiscarded[20]);
 
