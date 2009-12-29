@@ -457,6 +457,75 @@ void CBot::AnalyzeHand()
    }
 }
 
+int CBot::PlayHand(const bothand_t &hand, CCard rgDiscarded[20])
+{
+   int t[20], i, j, k, c = 0;
+   memset(t, 0, sizeof(t));
+
+   switch (hand.type) {
+      case DT_SINGLE:
+         for (i = hand.headval - hand.cnt + 1; i <= hand.headval; i++) {
+            for (j = 0; j < m_iNumHandCard; j++) {
+               if (m_rgHandCard[j].GetValue() == i) {
+                  rgDiscarded[c++] = m_rgHandCard[j];
+                  break;
+               }
+            }
+         }
+         break;
+
+      case DT_DOUBLE:
+         for (i = hand.headval - hand.cnt + 1; i <= hand.headval; i++) {
+            for (k = 0; k < 2; k++) {
+               for (j = 0; j < m_iNumHandCard; j++) {
+                  if (m_rgHandCard[j].GetValue() == i && !t[j]) {
+                     rgDiscarded[c++] = m_rgHandCard[j];
+                     t[j] = 1;
+                     break;
+                  }
+               }
+            }
+         }
+         break;
+
+      case DT_TRIPLE:
+         for (i = hand.headval - hand.cnt + 1; i <= hand.headval; i++) {
+            for (k = 0; k < 3; k++) {
+               for (j = 0; j < m_iNumHandCard; j++) {
+                  if (m_rgHandCard[j].GetValue() == i && !t[j]) {
+                     rgDiscarded[c++] = m_rgHandCard[j];
+                     t[j] = 1;
+                     break;
+                  }
+               }
+            }
+         }
+         break;
+
+      case DT_QUAD:
+         for (i = hand.headval - hand.cnt + 1; i <= hand.headval; i++) {
+            for (k = 0; k < 4; k++) {
+               for (j = 0; j < m_iNumHandCard; j++) {
+                  if (m_rgHandCard[j].GetValue() == i && !t[j]) {
+                     rgDiscarded[c++] = m_rgHandCard[j];
+                     t[j] = 1;
+                     break;
+                  }
+               }
+            }
+         }
+         break;
+
+      case DT_DBLJOKER:
+         rgDiscarded[c++] = CCard(52);
+         rgDiscarded[c++] = CCard(53);
+         break;
+   }
+
+   rgDiscarded[c] = 255;
+   return c;
+}
+
 int CBot::FirstHandDiscard(CCard rgDiscarded[20])
 {
    int iMaxValue = -999999, iSelectedHand = -1, i, iValue;
@@ -527,113 +596,56 @@ int CBot::FirstHandDiscard(CCard rgDiscarded[20])
 
    assert(iSelectedHand != -1);
 
-   int t[20];
-   memset(t, 0, sizeof(t));
-
-   int index = iSelectedHand, j, k, c = 0;
-
-   switch (m_rgHand[index].type) {
-      case DT_SINGLE:
-         for (i = m_rgHand[index].headval - m_rgHand[index].cnt + 1; i <= m_rgHand[index].headval; i++) {
-            for (j = 0; j < m_iNumHandCard; j++) {
-               if (m_rgHandCard[j].GetValue() == i) {
-                  rgDiscarded[c++] = m_rgHandCard[j];
-                  break;
-               }
-            }
-         }
-         break;
-
-      case DT_DOUBLE:
-         for (i = m_rgHand[index].headval - m_rgHand[index].cnt + 1; i <= m_rgHand[index].headval; i++) {
-            for (k = 0; k < 2; k++) {
-               for (j = 0; j < m_iNumHandCard; j++) {
-                  if (m_rgHandCard[j].GetValue() == i && !t[j]) {
-                     rgDiscarded[c++] = m_rgHandCard[j];
-                     t[j] = 1;
-                     break;
-                  }
-               }
-            }
-         }
-         break;
-
-      case DT_TRIPLE:
-         for (i = m_rgHand[index].headval - m_rgHand[index].cnt + 1; i <= m_rgHand[index].headval; i++) {
-            for (k = 0; k < 3; k++) {
-               for (j = 0; j < m_iNumHandCard; j++) {
-                  if (m_rgHandCard[j].GetValue() == i && !t[j]) {
-                     rgDiscarded[c++] = m_rgHandCard[j];
-                     t[j] = 1;
-                     break;
-                  }
-               }
-            }
-         }
-         // TODO: kicker cards
-         break;
-
-      case DT_QUAD:
-         for (i = m_rgHand[index].headval - m_rgHand[index].cnt + 1; i <= m_rgHand[index].headval; i++) {
-            for (k = 0; k < 4; k++) {
-               for (j = 0; j < m_iNumHandCard; j++) {
-                  if (m_rgHandCard[j].GetValue() == i && !t[j]) {
-                     rgDiscarded[c++] = m_rgHandCard[j];
-                     t[j] = 1;
-                     break;
-                  }
-               }
-            }
-         }
-         break;
-
-      case DT_DBLJOKER:
-         rgDiscarded[c++] = CCard(52);
-         rgDiscarded[c++] = CCard(53);
-         break;
-   }
-
-   rgDiscarded[c] = 255;
+   int c = PlayHand(m_rgHand[iSelectedHand], rgDiscarded);
+   // TODO: kicker cards
    return c;
 }
 
 int CBot::FollowCardSingle(CCard rgDiscarded[20])
 {
+   const discardhand_t &ld = GetLastDiscard();
    return 0; // TODO
 }
 
 int CBot::FollowCardDouble(CCard rgDiscarded[20])
 {
+   const discardhand_t &ld = GetLastDiscard();
    return 0; // TODO
 }
 
 int CBot::FollowCardTriple(CCard rgDiscarded[20])
 {
+   const discardhand_t &ld = GetLastDiscard();
    return 0; // TODO
 }
 
 int CBot::FollowCardTripleAt1(CCard rgDiscarded[20])
 {
+   const discardhand_t &ld = GetLastDiscard();
    return 0; // TODO
 }
 
 int CBot::FollowCardTripleAt2(CCard rgDiscarded[20])
 {
+   const discardhand_t &ld = GetLastDiscard();
    return 0; // TODO
 }
 
 int CBot::FollowCardQuadAt1(CCard rgDiscarded[20])
 {
+   const discardhand_t &ld = GetLastDiscard();
    return 0; // TODO
 }
 
 int CBot::FollowCardQuadAt2(CCard rgDiscarded[20])
 {
+   const discardhand_t &ld = GetLastDiscard();
    return 0; // TODO
 }
 
 int CBot::FollowCardQuad(CCard rgDiscarded[20])
 {
+   const discardhand_t &ld = GetLastDiscard();
    return 0; // TODO
 }
 
@@ -641,7 +653,6 @@ int CBot::FollowCard(CCard rgDiscarded[20])
 {
    const discardhand_t &ld = GetLastDiscard();
 
-   // TODO
    switch (ld.type) {
       case DT_SINGLE:
          return FollowCardSingle(rgDiscarded);
