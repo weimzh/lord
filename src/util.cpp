@@ -1,13 +1,12 @@
 //
-// Copyright (c) 2009 Wei Mingzhi <whistler@openoffice.org>
+// Copyright (c) 2009 Wei Mingzhi <whistler_wmz@users.sf.net>
 // Portions Copyright (c) 2001 Gregory Velichansky <hmaon@bumba.net>
 // Portions Copyright (c) 2000 Stephane Magnenat <nct@ysagoon.com>
 // All Rights Reserved.
 //
 // This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License as
-// published by the Free Software Foundation; either version 3 of
-// the License, or (at your option) any later version.
+// modify it under the terms of the GNU General Public License,
+// version 3, as published by the Free Software Foundation.
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
