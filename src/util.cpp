@@ -56,25 +56,13 @@ char *va(const char *format, ...)
    return string;
 }
 
-static int glSeed = 0; // our random number generator's seed
-
-// This function initializes the random seed based on the initial seed value passed in the
-// initial_seed parameter.
-static void lsrand(unsigned int initial_seed)
+// This function reseeds the random number generator with a new seed value
+// based on multiple entropy sources to ensure different cards are dealt
+// each round and each game session.
+void ReseedRandom(void)
 {
-   // fill in the initial seed of the random number generator
-   glSeed = 1664525L * initial_seed + 1013904223L;
-}
-
-// This function is the equivalent of the rand() standard C library function, except that
-// whereas rand() works only with short integers (i.e. not above 32767), this function is
-// able to generate 32-bit random numbers. Isn't that nice?
-static int lrand(void)
-{
-   if (glSeed == 0) // if the random seed isn't initialized...
-      lsrand(time(NULL)); // initialize it first
-   glSeed = 1664525L * glSeed + 1013904223L; // do some twisted math (infinite suite)
-   return ((glSeed >> 1) + 1073741824L); // and return the result. Yeah, simple as that.
+   // Use time and clock for better entropy across rounds
+   srand((unsigned int)time(NULL) ^ (unsigned int)clock());
 }
 
 // This function returns a random integer number between (and including) the starting and
@@ -84,7 +72,7 @@ int RandomLong(int from, int to)
    if (to <= from)
       return from;
 
-   return from + lrand() / (LONG_MAX / (to - from + 1));
+   return from + rand() % (to - from + 1);
 }
 
 // This function returns a random floating-point number between (and including) the starting
@@ -94,7 +82,7 @@ float RandomFloat(float from, float to)
    if (to <= from)
       return from;
 
-   return from + (float)lrand() / (LONG_MAX / (to - from));
+   return from + (float)rand() / RAND_MAX * (to - from);
 }
 
 int log2(int val)

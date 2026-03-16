@@ -172,6 +172,7 @@ void CGame::AddPlayer(CBasePlayer *p, int iScore, const char *szName)
 // New round started
 void CGame::NewRound()
 {
+   ReseedRandom(); // reseed the random number generator to ensure different cards each round
    CCard::NewRound();
 
    m_rgpPlayers[0]->NewRound();

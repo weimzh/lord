@@ -99,6 +99,7 @@ int RandomLong(int from, int to);
 float RandomFloat(float from, float to);
 int log2(int val);
 void TerminateOnError(const char *fmt, ...);
+void ReseedRandom(void);
 
 char *UTIL_StrGetLine(const char *buf, int width, int &length);
 unsigned int UTIL_GetPixel(SDL_Surface *surface, int x, int y);

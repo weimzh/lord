@@ -71,6 +71,15 @@ private:
    int                  FirstHandDiscard(CCard rgDiscarded[20]);
    int                  FollowCard(CCard rgDiscarded[20]);
 
+   // AI helper functions
+   int                  CalculateHandStrength();
+   int                  FindKickers(CCard rgDiscarded[20], int numMain, int numKickers, int excludeValue);
+   int                  FindSmallestBeatingCard(int minValue, int excludeValue);
+   int                  FindSmallestBeatingPair(int minValue);
+   int                  FindSmallestBeatingTriple(int minValue);
+   bool                 HasBomb();
+   int                  FindSmallestBomb();
+
    int                  FollowCardSingle(CCard rgDiscarded[20]);
    int                  FollowCardDouble(CCard rgDiscarded[20]);
    int                  FollowCardTriple(CCard rgDiscarded[20]);
